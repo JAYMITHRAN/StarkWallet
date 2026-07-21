@@ -1,0 +1,17 @@
+.main-portfolio {
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+  padding: 24px;
+}
+
+.main-portfolio h1 {
+  color: #ffd700;
+  font-size: 28px;
+  letter-spacing: 1px;
+}
+
+.main-portfolio p {
+  color: #f5f5dc;
+  opacity: 0.8;
+}

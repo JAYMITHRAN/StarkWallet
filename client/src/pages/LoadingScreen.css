@@ -1,0 +1,215 @@
+.loading-screen-shell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  padding: 24px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(2, 6, 23, 0.96), rgba(15, 23, 42, 0.95));
+}
+
+.loading-screen-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), transparent 38%),
+    radial-gradient(circle at bottom right, rgba(37, 99, 235, 0.2), transparent 34%);
+  pointer-events: none;
+}
+
+.arc-reactor-screen {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.arc-reactor {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 calc(18px * var(--glow, 0.5)) rgba(56, 189, 248, calc(var(--glow, 0.5) * 0.7)));
+}
+
+.ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.ring-track {
+  fill: none;
+  stroke: rgba(248, 250, 252, 0.24);
+  stroke-width: 1.4;
+  opacity: 0.7;
+}
+
+.ring-track--dashed {
+  stroke: rgba(56, 189, 248, 0.95);
+  stroke-width: 2;
+  stroke-dasharray: 7 10;
+  opacity: 0.9;
+}
+
+.ring-track--thin {
+  stroke: rgba(148, 163, 184, 0.8);
+  stroke-width: 1;
+  opacity: 0.8;
+}
+
+.ring-tick {
+  stroke: rgba(37, 99, 235, 0.95);
+  stroke-width: 2;
+  opacity: 0.9;
+}
+
+.ring--outer {
+  animation: spinCW 9s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+.ring--middle {
+  animation: spinCCW 5.5s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+.ring--inner {
+  animation: spinCW 3s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+@keyframes spinCW {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinCCW {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.core {
+  position: absolute;
+  width: 62%;
+  height: 62%;
+}
+
+.core-track {
+  fill: rgba(15, 23, 42, 0.9);
+  stroke: rgba(56, 189, 248, 0.16);
+  stroke-width: 4;
+}
+
+.core-progress {
+  fill: none;
+  stroke: #38BDF8;
+  stroke-width: 4;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  transition: stroke-dashoffset 60ms linear;
+  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.8));
+}
+
+.core-glow {
+  fill: #38BDF8;
+  opacity: calc(var(--glow, 0.5) * 0.5);
+  filter: blur(10px);
+  animation: coreFlicker 1.4s ease-in-out infinite;
+}
+
+@keyframes coreFlicker {
+  0%,
+  100% {
+    opacity: calc(var(--glow, 0.5) * 0.4);
+  }
+  50% {
+    opacity: calc(var(--glow, 0.5) * 0.65);
+  }
+}
+
+.core-center {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 9999px;
+  background: rgba(15, 23, 42, 0.9);
+  box-shadow: inset 0 0 0 1px rgba(56, 189, 248, 0.28), 0 0 20px rgba(37, 99, 235, 0.28);
+}
+
+.core-icon {
+  width: 28px;
+  height: 28px;
+  color: #f8fafc;
+}
+
+.core-percentage {
+  position: relative;
+  z-index: 2;
+  font-size: 22px;
+  font-weight: 700;
+  color: #f8fafc;
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.85);
+  letter-spacing: 1px;
+}
+
+.loading-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.loading-label {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  color: #38BDF8;
+  text-transform: uppercase;
+}
+
+.loading-message {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #cbd5e1;
+}
+
+.loading-bar {
+  width: 220px;
+  height: 6px;
+  border-radius: 9999px;
+  overflow: hidden;
+  background: rgba(148, 163, 184, 0.16);
+  border: 1px solid rgba(56, 189, 248, 0.16);
+}
+
+.loading-bar__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #38BDF8, #2563EB);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+  transition: width 60ms linear;
+}

@@ -1,0 +1,8 @@
+{
+  "name": "@stark/shared",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Isomorphic TypeScript types shared between the StarkMoneyWalletTracker client and server.",
+  "main": "types/index.ts",
+  "types": "types/index.ts"
+}

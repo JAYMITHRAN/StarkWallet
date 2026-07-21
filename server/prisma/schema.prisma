@@ -1,0 +1,111 @@
+// ─────────────────────────────────────────────────────────────────────────
+// StarkMoneyWalletTracker — Database Schema
+// Phase 1: schema is designed for the full product; only Auth + Opening
+// Balance flows are wired up to controllers this phase.
+// ─────────────────────────────────────────────────────────────────────────
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// The app is single-user (password-only, no signup), but the User model
+// exists so auth, ownership, and future multi-profile support have a
+// stable foreign key to hang off — ripping it out later would touch
+// every table.
+model User {
+  id                     String   @id @default(cuid())
+  passwordHash           String
+  hasCompletedOnboarding Boolean  @default(false)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  transactions       Transaction[]
+  recurringExpenses  RecurringExpense[]
+  monthlySummaries   MonthlySummary[]
+  settings           Settings?
+
+  @@map("users")
+}
+
+model Transaction {
+  id         String   @id @default(cuid())
+  userId     String
+  type       String
+  category   String
+  amount     Float
+  reason     String?
+  note       String?
+  occurredAt DateTime            @default(now())
+
+  isDeleted Boolean   @default(false)
+  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, occurredAt])
+  @@index([userId, type])
+  @@index([userId, isDeleted])
+  @@index([userId, category, isDeleted])
+  @@index([userId, isDeleted, occurredAt])
+  @@map("transactions")
+}
+
+model RecurringExpense {
+  id         String   @id @default(cuid())
+  userId     String
+  label      String
+  amount     Float
+  category   String
+  frequency  String
+  nextRunAt  DateTime
+  isActive   Boolean              @default(true)
+
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isActive])
+  @@map("recurring_expenses")
+}
+
+model MonthlySummary {
+  id              String   @id @default(cuid())
+  userId          String
+  month           Int // 1-12
+  year            Int
+  totalCashIn     Float    @default(0)
+  totalCashOut    Float    @default(0)
+  closingBalance  Float    @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, month, year])
+  @@map("monthly_summaries")
+}
+
+model Settings {
+  id                    String  @id @default(cuid())
+  userId                String  @unique
+  currency              String  @default("INR")
+  theme                 String  @default("DARK")
+  notificationsEnabled  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("settings")
+}
