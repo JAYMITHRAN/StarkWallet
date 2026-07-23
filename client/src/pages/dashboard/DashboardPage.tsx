@@ -7,7 +7,7 @@ import { RecentTransactions } from "@/components/dashboard/RecentTransactions";
 
 import { transactionService } from "@/services/transactionService";
 import { formatCurrency } from "@/lib/utils";
-import { QuickCashInForm } from "@/components/dashboard/QuickCashInForm";
+// import { QuickCashInForm } from "@/components/dashboard/QuickCashInForm";
 import { QuickCashOutForm } from "@/components/dashboard/QuickCashOutForm";
 
 export function DashboardPage() {
@@ -50,7 +50,7 @@ export function DashboardPage() {
 
       {/* Transaction Entry Desk */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <QuickCashInForm />
+        {/* <QuickCashInForm /> */}
         <QuickCashOutForm currentBalance={data.currentBalance} />
       </div>
 
