@@ -20,12 +20,13 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Settings", to: "/settings", icon: Settings },
 ];
 
-// Bottom nav (mobile) shows a focused subset; the rest live in Settings > More
-// or are reachable from Dashboard shortcuts, keeping the tab bar uncluttered.
+// Bottom nav (mobile): Dashboard · Cash In · Cash Out · History · Summary
+// Settings is reachable via the gear icon in the mobile TopNavigation header
+// and from the desktop sidebar, keeping the tab bar focused on core actions.
 export const BOTTOM_NAV_ITEMS: NavItem[] = [
-  NAV_ITEMS[0]!,
-  NAV_ITEMS[1]!,
-  NAV_ITEMS[2]!,
-  NAV_ITEMS[3]!,
-  NAV_ITEMS[6]!,
+  NAV_ITEMS[0]!, // Dashboard
+  NAV_ITEMS[1]!, // Cash In
+  NAV_ITEMS[2]!, // Cash Out
+  NAV_ITEMS[3]!, // History
+  NAV_ITEMS[4]!, // Summary
 ];

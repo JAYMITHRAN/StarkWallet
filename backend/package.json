@@ -1,5 +1,5 @@
 {
-  "name": "@stark/server",
+  "name": "@stark/backend",
   "version": "0.1.0",
   "private": true,
   "description": "StarkMoneyWalletTracker API — Fastify + Prisma + SQLite",

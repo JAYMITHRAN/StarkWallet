@@ -1,0 +1,46 @@
+services:
+  - type: web
+    name: stark-money-wallet-api
+    runtime: node
+    region: oregon           # choose: oregon | frankfurt | singapore | ohio
+    plan: free               # free | starter | standard | pro
+
+    # ── Paths (Render detects the monorepo root; backend/ is the subdirectory) ──
+    rootDir: backend
+
+    # ── Build ───────────────────────────────────────────────────────────────
+    buildCommand: |
+      npm install
+      npx prisma generate
+      npm run build
+
+    # ── Start ───────────────────────────────────────────────────────────────
+    startCommand: npm run start
+
+    # ── Health check — Render will ping this to confirm the service is up ───
+    healthCheckPath: /health
+
+    # ── Environment variables ────────────────────────────────────────────────
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: HOST
+        value: 0.0.0.0
+      # Set DATABASE_URL in the Render dashboard (secret)
+      - key: DATABASE_URL
+        sync: false
+      # Set JWT_SECRET in the Render dashboard (secret)
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: BCRYPT_SALT_ROUNDS
+        value: "12"
+      # Set to your Vercel frontend URL — used for CORS
+      # e.g. https://stark-wallet.vercel.app
+      - key: CORS_ORIGIN
+        sync: false
+      # Render automatically injects RENDER_EXTERNAL_URL — used by keep-alive
+      # No need to set this manually.

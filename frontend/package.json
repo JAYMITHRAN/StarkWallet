@@ -1,5 +1,5 @@
 {
-  "name": "@stark/client",
+  "name": "@stark/frontend",
   "version": "0.1.0",
   "private": true,
   "description": "StarkMoneyWalletTracker — Stark Glass PWA client",
