@@ -1,4 +1,5 @@
-const API_BASE_URL = `${import.meta.env.VITE_API_URL || ""}/api/v1`;
+const cleanBaseUrl = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
+const API_BASE_URL = `${cleanBaseUrl}/api/v1`;
 const TOKEN_STORAGE_KEY = "stark_auth_token";
 export const tokenStorage = {
     get: () => localStorage.getItem(TOKEN_STORAGE_KEY),
