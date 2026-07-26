@@ -12,7 +12,6 @@ services:
     buildCommand: |
       npm install --production=false
       npx prisma generate
-      npx prisma db push
       npm run build
 
     # ── Start ───────────────────────────────────────────────────────────────
