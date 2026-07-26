@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { openingBalanceService } from "../services/openingBalance.service.js";
 import { openingBalanceSchema } from "../validators/openingBalance.validator.js";
-import type { ApiSuccess, Transaction } from "../../../shared/types/index.js";
+import type { ApiSuccess, Transaction } from "../shared/types/index.js";
 
 export const openingBalanceController = {
   async set(request: FastifyRequest, reply: FastifyReply) {

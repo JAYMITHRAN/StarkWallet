@@ -1,7 +1,7 @@
 import type { FastifyError, FastifyReply, FastifyRequest } from "fastify";
 import { ZodError } from "zod";
 import { HttpError } from "../utils/httpError.js";
-import type { ApiError } from "../../../shared/types/index.js";
+import type { ApiError } from "../shared/types/index.js";
 
 /**
  * Every error in the app funnels through here and comes out as the same

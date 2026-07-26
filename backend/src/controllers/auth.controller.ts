@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { authService } from "../services/auth.service.js";
 import { createPasswordSchema, loginSchema } from "../validators/auth.validator.js";
-import type { ApiSuccess, AuthResponse, User } from "../../../shared/types/index.js";
+import type { ApiSuccess, AuthResponse, User } from "../shared/types/index.js";
 
 function toPublicUser(user: { id: string; hasCompletedOnboarding: boolean; createdAt: Date; updatedAt: Date }): User {
   return {

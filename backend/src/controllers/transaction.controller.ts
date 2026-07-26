@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { transactionService } from "../services/transaction.service.js";
 import { cashOutSchema, createTransactionSchema, updateTransactionSchema } from "../validators/transaction.validator.js";
-import type { ApiSuccess, CreateTransactionRequest, Transaction, UpdateTransactionRequest } from "../../../shared/types/index.js";
+import type { ApiSuccess, CreateTransactionRequest, Transaction, UpdateTransactionRequest } from "../shared/types/index.js";
 
 function serializeTransaction(transaction: any): Transaction {
   return {

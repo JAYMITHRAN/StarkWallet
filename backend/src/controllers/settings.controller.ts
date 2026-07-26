@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { settingsService } from "../services/settings.service.js";
-import type { ApiSuccess, Settings } from "../../../shared/types/index.js";
+import type { ApiSuccess, Settings } from "../shared/types/index.js";
 
 export const settingsController = {
   async get(request: FastifyRequest, reply: FastifyReply) {

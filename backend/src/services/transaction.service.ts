@@ -1,6 +1,6 @@
 import { prisma } from "../lib/prisma.js";
 import { HttpError } from "../utils/httpError.js";
-import type { CreateTransactionRequest, UpdateTransactionRequest, TransactionListQuery } from "../../../shared/types/index.js";
+import type { CreateTransactionRequest, UpdateTransactionRequest, TransactionListQuery } from "../shared/types/index.js";
 
 interface DashboardSummary {
   openingBalance: number;

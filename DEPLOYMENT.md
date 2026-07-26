@@ -17,8 +17,7 @@ The frontend is built with React, Vite, and TypeScript. It compiles down to stat
    - **Root Directory**: Click *Edit* and select **`frontend`**.
    - **Build & Development Settings**: Keep defaults (Build Command: `npm run build`, Output Directory: `dist`).
 4. **Configure Environment Variables**:
-   Add the following environment variable under the **Environment Variables** section:
-   - **`VITE_API_URL`**: `https://your-backend-app.onrender.com` (Your Render backend URL)
+   Add the variables listed in **`frontend/.env.production`** (specifically `VITE_API_URL` pointing to your Render backend API URL).
 5. **Deploy**: Click **Deploy**. Vercel will automatically configure routing for single-page application (SPA) paths via the pre-configured `vercel.json`.
 
 ---
@@ -39,18 +38,22 @@ The backend is built with Fastify, Prisma, SQLite/PostgreSQL, and tsx/TypeScript
    - **Root Directory**: Enter **`backend`**.
    - **Runtime**: Select **`Node`**.
 5. **Build & Start Commands**:
-   - **Build Command**: `npm install && npx prisma generate && npm run build`
+   - **Build Command**: `npm install --production=false && npx prisma generate && npm run build`
    - **Start Command**: `npm run start`
 6. **Configure Environment Variables**:
-   Add the following variables under the **Advanced** → **Environment Variables** section:
-   - **`NODE_ENV`**: `production`
-   - **`PORT`**: `4000`
-   - **`HOST`**: `0.0.0.0`
-   - **`DATABASE_URL`**: `file:./dev.db` (For SQLite) or your PostgreSQL URL connection string.
-   - **`JWT_SECRET`**: `a-long-secure-random-secret-string`
-   - **`JWT_EXPIRES_IN`**: `7d`
-   - **`BCRYPT_SALT_ROUNDS`**: `12`
-   - **`CORS_ORIGIN`**: `https://your-frontend-app.vercel.app` (Your Vercel deployment URL)
+   You can copy the variables directly from **`backend/.env.production`** (you can use Render's **Add Environment Variable** → **Secret File / Bulk Editor** to copy-paste the whole block at once) or input the following exact Key/Value pairs:
+
+   | Key | Exact Value to Enter | Description / Action |
+   | :--- | :--- | :--- |
+   | `NODE_ENV` | `production` | Sets the application environment to production. |
+   | `PORT` | `4000` | The internal port the server listens on. |
+   | `HOST` | `0.0.0.0` | Allows the container to accept external traffic. |
+   | `DATABASE_URL` | `file:./dev.db` | The path to the SQLite file. If you use PostgreSQL later, replace this with your connection string. |
+   | `JWT_SECRET` | `stark_secure_jwt_wallet_key_2026` | A secure key to sign authentication tokens. You can keep this exact key or change it to any secret string. |
+   | `JWT_EXPIRES_IN` | `7d` | Tokens expire and user must re-authenticate after 7 days. |
+   | `BCRYPT_SALT_ROUNDS` | `12` | Controls password hashing security strength. |
+   | `CORS_ORIGIN` | `*` | Permits requests from Vercel. (For max security, replace `*` with your actual Vercel URL once deployed, e.g. `https://stark-wallet.vercel.app`). |
+
 7. **Deploy**: Click **Create Web Service**.
 
 > [!NOTE]
