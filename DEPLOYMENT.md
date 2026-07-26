@@ -38,7 +38,7 @@ The backend is built with Fastify, Prisma, SQLite/PostgreSQL, and tsx/TypeScript
    - **Root Directory**: Enter **`backend`**.
    - **Runtime**: Select **`Node`**.
 5. **Build & Start Commands**:
-   - **Build Command**: `npm install --production=false && npx prisma generate && npm run build`
+   - **Build Command**: `npm install --production=false && npx prisma generate && npx prisma migrate deploy && npm run build`
    - **Start Command**: `npm run start`
 6. **Configure Environment Variables**:
    You can copy the variables directly from **`backend/.env.production`** (you can use Render's **Add Environment Variable** → **Secret File / Bulk Editor** to copy-paste the whole block at once) or input the following exact Key/Value pairs:
