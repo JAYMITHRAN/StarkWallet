@@ -8,7 +8,9 @@ build/
 # Env
 .env
 .env.local
+.env.production
 !.env.example
+!.env.production.example
 
 # Database
 *.db
@@ -25,8 +27,18 @@ npm-debug.log*
 
 # OS
 .DS_Store
+Thumbs.db
 
 # Prisma
 server/prisma/migrations/dev.db
 
+# Vercel
 .vercel
+
+# Data exports / spreadsheets (not source code)
+*.xls
+*.xlsx
+*.csv
+
+# TypeScript build info
+*.tsbuildinfo

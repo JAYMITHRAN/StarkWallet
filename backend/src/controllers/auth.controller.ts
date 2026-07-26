@@ -12,6 +12,20 @@ function toPublicUser(user: { id: string; hasCompletedOnboarding: boolean; creat
   };
 }
 
+/**
+ * Returns the number of seconds remaining until the end of the current UTC day
+ * (i.e. until 23:59:59 UTC tonight). Minimum 60 seconds to avoid edge-case
+ * tokens with ~0 TTL issued right at midnight.
+ */
+function secondsUntilEndOfDay(): number {
+  const now = new Date();
+  const endOfDay = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 23, 59, 59)
+  );
+  const diff = Math.floor((endOfDay.getTime() - now.getTime()) / 1000);
+  return Math.max(diff, 60);
+}
+
 export const authController = {
   async status(_request: FastifyRequest, reply: FastifyReply) {
     const hasAccount = await authService.hasAccount();
@@ -22,7 +36,8 @@ export const authController = {
   async createPassword(request: FastifyRequest, reply: FastifyReply) {
     const input = createPasswordSchema.parse(request.body);
     const user = await authService.createPassword(input);
-    const token = await reply.jwtSign({ userId: user.id });
+    // Token expires at end of today (UTC) — forces re-login the next calendar day
+    const token = await reply.jwtSign({ userId: user.id }, { expiresIn: secondsUntilEndOfDay() });
 
     const body: ApiSuccess<AuthResponse> = { success: true, data: { token, user: toPublicUser(user) } };
     return reply.status(201).send(body);
@@ -31,7 +46,8 @@ export const authController = {
   async login(request: FastifyRequest, reply: FastifyReply) {
     const input = loginSchema.parse(request.body);
     const user = await authService.login(input);
-    const token = await reply.jwtSign({ userId: user.id });
+    // Token expires at end of today (UTC) — forces re-login the next calendar day
+    const token = await reply.jwtSign({ userId: user.id }, { expiresIn: secondsUntilEndOfDay() });
 
     const body: ApiSuccess<AuthResponse> = { success: true, data: { token, user: toPublicUser(user) } };
     return reply.status(200).send(body);

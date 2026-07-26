@@ -1,7 +1,7 @@
 import { createContext, useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { User } from "@stark/shared/types/index";
 import { authService } from "@/services/authService";
-import { sessionService } from "@/services/sessionService";
+import { sessionService, todayUTC } from "@/services/sessionService";
 import { tokenStorage } from "@/services/apiClient";
 
 interface AuthContextValue {
@@ -27,12 +27,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    // ── Daily re-auth check ───────────────────────────────────────────────
+    // If the stored login date is from a previous UTC day, clear the session
+    // and force the user to re-enter their password. The backend JWT expiry
+    // also enforces this, but the frontend check provides instant feedback
+    // without waiting for a 401 from the server.
+    const loginDate = sessionService.getLoginDate();
+    if (!loginDate || loginDate !== todayUTC()) {
+      sessionService.clearSession();
+      tokenStorage.clear();
+      setUser(null);
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const me = await authService.me();
       setUser(me);
-      if (token) sessionService.setToken(token);
     } catch {
-      sessionService.clearToken();
+      sessionService.clearSession();
       tokenStorage.clear();
       setUser(null);
     } finally {
@@ -46,12 +59,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const setSession = useCallback((token: string, nextUser: User) => {
     sessionService.setToken(token);
+    sessionService.setLoginDate(); // record today so daily check works
     tokenStorage.set(token);
     setUser(nextUser);
   }, []);
 
   const logout = useCallback(() => {
-    sessionService.clearToken();
+    sessionService.clearSession();
     tokenStorage.clear();
     setUser(null);
   }, []);
