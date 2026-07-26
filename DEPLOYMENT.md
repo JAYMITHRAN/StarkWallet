@@ -17,14 +17,14 @@ The frontend is built with React, Vite, and TypeScript. It compiles down to stat
    - **Root Directory**: Click *Edit* and select **`frontend`**.
    - **Build & Development Settings**: Keep defaults (Build Command: `npm run build`, Output Directory: `dist`).
 4. **Configure Environment Variables**:
-   Add the variables listed in **`frontend/.env.production`** (specifically `VITE_API_URL` pointing to your Render backend API URL).
+   Add the variable `VITE_API_URL` pointing to your Render backend API URL (e.g. `https://stark-wallet-api.onrender.com`).
 5. **Deploy**: Click **Deploy**. Vercel will automatically configure routing for single-page application (SPA) paths via the pre-configured `vercel.json`.
 
 ---
 
 ## ⚡ 2. Backend Deployment (Render)
 
-The backend is built with Fastify, Prisma, SQLite/PostgreSQL, and tsx/TypeScript.
+The backend is built with Fastify, Prisma, PostgreSQL, and tsx/TypeScript.
 
 ### 📝 Step-by-Step Render Setup
 
@@ -41,18 +41,18 @@ The backend is built with Fastify, Prisma, SQLite/PostgreSQL, and tsx/TypeScript
    - **Build Command**: `npm install --production=false && npx prisma generate && npx prisma migrate deploy && npm run build`
    - **Start Command**: `npm run start`
 6. **Configure Environment Variables**:
-   You can copy the variables directly from **`backend/.env.production`** (you can use Render's **Add Environment Variable** → **Secret File / Bulk Editor** to copy-paste the whole block at once) or input the following exact Key/Value pairs:
+   Input the following exact Key/Value pairs in Render's **Environment** tab:
 
-   | Key | Exact Value to Enter | Description / Action |
+   | Key | Example / Value | Description |
    | :--- | :--- | :--- |
    | `NODE_ENV` | `production` | Sets the application environment to production. |
    | `PORT` | `4000` | The internal port the server listens on. |
    | `HOST` | `0.0.0.0` | Allows the container to accept external traffic. |
    | `DATABASE_URL` | `postgresql://...` | Your online PostgreSQL connection string (e.g. from Neon.tech). |
-   | `JWT_SECRET` | `stark_secure_jwt_wallet_key_2026` | A secure key to sign authentication tokens. You can keep this exact key or change it to any secret string. |
-   | `JWT_EXPIRES_IN` | `7d` | Tokens expire and user must re-authenticate after 7 days. |
+   | `JWT_SECRET` | `replace-with-a-long-random-string` | A secure, random key to sign tokens (min 16 chars). Do not expose this. |
+   | `JWT_EXPIRES_IN` | `1d` | Token lifetime (tokens expire at end of UTC day). |
    | `BCRYPT_SALT_ROUNDS` | `12` | Controls password hashing security strength. |
-   | `CORS_ORIGIN` | `*` | Permits requests from Vercel. (For max security, replace `*` with your actual Vercel URL once deployed, e.g. `https://stark-wallet.vercel.app`). |
+   | `CORS_ORIGIN` | `*` | Permits requests from Vercel. (Replace `*` with your actual Vercel URL once deployed, e.g. `https://stark-wallet.vercel.app`). |
 
 7. **Deploy**: Click **Create Web Service**.
 
@@ -99,3 +99,4 @@ We have provided an automated migration script to copy all your existing local S
 2. Click **Environment**.
 3. Edit **`DATABASE_URL`** and paste your new PostgreSQL connection string.
 4. Save the changes. Render will automatically redeploy the backend with the persistent database!
+
