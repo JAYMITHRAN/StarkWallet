@@ -48,7 +48,7 @@ The backend is built with Fastify, Prisma, SQLite/PostgreSQL, and tsx/TypeScript
    | `NODE_ENV` | `production` | Sets the application environment to production. |
    | `PORT` | `4000` | The internal port the server listens on. |
    | `HOST` | `0.0.0.0` | Allows the container to accept external traffic. |
-   | `DATABASE_URL` | `file:./dev.db` | The path to the SQLite file. If you use PostgreSQL later, replace this with your connection string. |
+   | `DATABASE_URL` | `postgresql://...` | Your online PostgreSQL connection string (e.g. from Neon.tech). |
    | `JWT_SECRET` | `stark_secure_jwt_wallet_key_2026` | A secure key to sign authentication tokens. You can keep this exact key or change it to any secret string. |
    | `JWT_EXPIRES_IN` | `7d` | Tokens expire and user must re-authenticate after 7 days. |
    | `BCRYPT_SALT_ROUNDS` | `12` | Controls password hashing security strength. |
@@ -67,3 +67,35 @@ The backend includes a self-pinging keep-alive mechanism to prevent Render's **F
 
 - Render automatically injects the `RENDER_EXTERNAL_URL` environment variable during deployment.
 - When `NODE_ENV=production` is detected, the API will self-ping its own `/health` endpoint every **14 minutes**, keeping the container active and highly responsive all the time.
+
+---
+
+## 🗄️ 4. Persistent PostgreSQL Setup & Data Migration
+
+Because Render's filesystem is ephemeral, using local SQLite means your transaction data would be reset when Render restarts your container. Switching to a free online PostgreSQL database (like **Neon.tech**) guarantees permanent persistence.
+
+### 🌟 Step 1: Create a Free PostgreSQL Database
+1. Go to [Neon.tech](https://neon.tech) and sign up for a free account.
+2. Create a new project (e.g., `stark-wallet-db`).
+3. Under **Connection Details**, copy your **Connection String** (select the `node-postgres` or `Prisma` option). It will look like:
+   `postgresql://owner:password@ep-cool-snowflake-123456.us-east-2.aws.neon.tech/neondb?sslmode=require`
+
+### 📤 Step 2: Push your Schema and Migrate Existing Data
+We have provided an automated migration script to copy all your existing local SQLite data directly to your new PostgreSQL database.
+
+1. Open your terminal in the root directory.
+2. Initialize the tables in your PostgreSQL database:
+   ```bash
+   npx prisma db push --schema=backend/prisma/schema.prisma
+   ```
+3. Run the migration script to upload all your local SQLite data (users, settings, transactions) to the cloud PostgreSQL database:
+   ```bash
+   node scripts/migrate-sqlite-to-pg.js "<your-postgres-connection-string>"
+   ```
+   *(Replace `<your-postgres-connection-string>` with the string you copied in Step 1, wrapping it in double quotes).*
+
+### 🔧 Step 3: Update Render
+1. Go to your **Render Dashboard** → Select your **`stark-money-wallet-api`** web service.
+2. Click **Environment**.
+3. Edit **`DATABASE_URL`** and paste your new PostgreSQL connection string.
+4. Save the changes. Render will automatically redeploy the backend with the persistent database!

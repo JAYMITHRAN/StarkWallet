@@ -23,5 +23,9 @@
   },
   "dependencies": {
     "@prisma/client": "^5.22.0"
+  },
+  "devDependencies": {
+    "pg": "^8.22.0",
+    "sqlite3": "^6.0.1"
   }
 }
