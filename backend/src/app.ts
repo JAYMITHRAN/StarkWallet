@@ -21,8 +21,19 @@ export async function buildApp() {
     },
   });
 
+  let corsOrigin: string | boolean = env.CORS_ORIGIN;
+  if (corsOrigin && corsOrigin !== "*") {
+    try {
+      // In case the user input a URL with a path (e.g. https://domain.com/login)
+      const parsedUrl = new URL(corsOrigin);
+      corsOrigin = parsedUrl.origin;
+    } catch {
+      // Fallback to the original value if it doesn't parse as a full URL
+    }
+  }
+
   await app.register(cors, {
-    origin: env.CORS_ORIGIN,
+    origin: corsOrigin,
     credentials: true,
   });
 

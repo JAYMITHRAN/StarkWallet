@@ -28,3 +28,5 @@ npm-debug.log*
 
 # Prisma
 server/prisma/migrations/dev.db
+
+.vercel
