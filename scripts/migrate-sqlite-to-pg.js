@@ -162,6 +162,32 @@ async function runMigration() {
     }
     console.log("✅ Monthly summaries migrated.");
 
+    // 6. Migrate Noteouts
+    console.log("📓 Migrating noteouts...");
+    const noteouts = await sqliteQuery("SELECT * FROM noteouts");
+    console.log(`Found ${noteouts.length} noteouts.`);
+    for (const n of noteouts) {
+      await pgClient.query(
+        `INSERT INTO noteouts (id, "userId", type, amount, reason, note, "occurredAt", "isDeleted", "deletedAt", "createdAt", "updatedAt")
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+         ON CONFLICT (id) DO NOTHING`,
+        [
+          n.id,
+          n.userId,
+          n.type,
+          n.amount,
+          n.reason,
+          n.note,
+          new Date(n.occurredAt),
+          n.isDeleted === 1,
+          n.deletedAt ? new Date(n.deletedAt) : null,
+          new Date(n.createdAt),
+          new Date(n.updatedAt)
+        ]
+      );
+    }
+    console.log("✅ Noteouts migrated.");
+
     console.log("\n🎉 SUCCESS! SQLite database migration to PostgreSQL is 100% complete!");
 
   } catch (err) {
