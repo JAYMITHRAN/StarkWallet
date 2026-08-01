@@ -9,6 +9,7 @@ build/
 .env
 .env.local
 .env.production
+CREDENTIALS.md
 !.env.example
 !.env.production.example
 
