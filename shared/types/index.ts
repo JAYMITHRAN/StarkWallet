@@ -43,6 +43,11 @@ export enum RecurrenceFrequency {
   YEARLY = "YEARLY",
 }
 
+export enum NoteoutType {
+  IN = "IN",
+  OUT = "OUT",
+}
+
 export enum ThemeMode {
   DARK = "DARK", // Phase 1: dark is the only supported mode
 }
@@ -111,6 +116,20 @@ export interface Settings {
   updatedAt: string;
 }
 
+export interface Noteout {
+  id: string;
+  userId: string;
+  type: NoteoutType;
+  amount: number;
+  reason: string;
+  note: string | null;
+  occurredAt: string;
+  isDeleted: boolean;
+  deletedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // ─────────────────────────────────────────────────────────────────────────
 // API Contracts — Auth
 // ─────────────────────────────────────────────────────────────────────────
@@ -169,6 +188,34 @@ export interface TransactionListQuery {
   to?: string;
   sort?: "newest" | "oldest" | "highest" | "lowest" | "category";
   includeDeleted?: boolean;
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// API Contracts — Noteouts
+// ─────────────────────────────────────────────────────────────────────────
+
+export interface CreateNoteoutRequest {
+  type: NoteoutType;
+  amount: number;
+  reason: string;
+  note?: string;
+  occurredAt?: string;
+}
+
+export interface UpdateNoteoutRequest {
+  type?: NoteoutType;
+  amount?: number;
+  reason?: string;
+  note?: string;
+  occurredAt?: string;
+}
+
+export interface NoteoutListQuery {
+  type?: NoteoutType;
+  search?: string;
+  from?: string;
+  to?: string;
+  sort?: "newest" | "oldest" | "highest" | "lowest";
 }
 
 // ─────────────────────────────────────────────────────────────────────────

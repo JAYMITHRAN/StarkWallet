@@ -1,91 +1,92 @@
 # StarkMoneyWalletTracker
 
-A personal finance PWA built around one promise: **track every
-transaction in under 5 seconds.**
+A personal finance PWA built around one promise: **track every transaction in under 5 seconds.**
 
-Mobile-first, installable, dark-mode-only, styled in the "Stark Glass"
-design language — a JARVIS-inspired fintech aesthetic in blue, black, and
-white.
+Mobile-first, installable, dark-mode-only, styled in the "Stark Glass" design language — a JARVIS-inspired fintech aesthetic in blue, black, and white.
 
-> **This is Phase 1.** It ships the full project architecture, auth, and
-> UI shell. Wallet business logic (transactions, analytics, recurring
-> expenses) lands in later phases — see [`docs/ROADMAP.md`](docs/ROADMAP.md).
+---
 
-## Quick start
+## 🚀 Quick Start
 
 ```bash
-./scripts/setup.sh
-npm run dev
+# Run both servers locally:
+npm run dev:backend   # API on http://localhost:4000
+npm run dev:frontend  # Web App on http://localhost:5173
 ```
 
-Client: `http://localhost:5173` · API: `http://localhost:4000`
+- **Client App**: `http://localhost:5173`
+- **Backend API**: `http://localhost:4000`
+- **Main Wallet Password**: `tonystark`
+- **Notebook Password**: `sruthi`
 
-See [`docs/DEVELOPMENT_GUIDE.md`](docs/DEVELOPMENT_GUIDE.md) for the manual
-setup steps and day-to-day workflow.
+See [`RUNNING.md`](RUNNING.md) for full local environment setup instructions.
 
-## Tech stack
+---
 
-**Frontend** — React 19, Vite, TypeScript, Tailwind CSS, Radix primitives
-(shadcn-style), React Router, TanStack Query, React Hook Form, Zod, Lucide
-icons, Recharts, `vite-plugin-pwa`.
+## 🛠️ Tech Stack
 
-**Backend** — Node.js, Fastify, Prisma, SQLite, JWT auth, bcrypt, Zod.
+- **Frontend**: React 19, Vite, TypeScript, Tailwind CSS, TanStack Query, React Router, Zod, Lucide Icons, Recharts, PWA.
+- **Backend**: Node.js, Fastify, Prisma, SQLite (dev) / PostgreSQL (prod), JWT auth, bcrypt, Zod.
+- **Shared**: Shared `@stark/shared` contract definitions keeping client & server strictly in sync.
 
-**Shared** — a single `shared/types` package so the client and server can
-never silently drift on data shape.
+---
 
-Full reasoning for each choice: [`docs/TECH_STACK.md`](docs/TECH_STACK.md).
+## 📓 Noteouts Ledger (Off-Book Notebook)
 
-## What's in Phase 1
+The **Noteouts** feature is a standalone, private notebook designed to record money movements (loans, informal IOUs, off-book expenses, cash advances) **without impacting your main wallet balance or monthly financial summaries**.
 
-- ✅ Monorepo architecture (`client` / `server` / `shared`, npm workspaces)
-- ✅ Password-based auth (create password → login → JWT-protected routes)
-- ✅ Opening balance onboarding flow
-- ✅ Prisma schema for `User`, `Transaction`, `RecurringExpense`,
-  `MonthlySummary`, `Settings`
-- ✅ Route/controller/service/validator structure for every planned API
-  resource (Transactions, Recurring Expenses, Settings, Summary return
-  `501` until their phase lands — the seams are real, the logic isn't)
-- ✅ Full reusable UI kit (Button, Input, Card, Dialog, ConfirmDialog,
-  Toast, Sidebar, Bottom/Top navigation, EmptyState, ChartWrapper, ...)
-- ✅ Stark Glass theme (dark-only), Tailwind token system
-- ✅ JARVIS-style boot splash
-- ✅ PWA manifest + service worker via `vite-plugin-pwa`
-- ✅ All 9 pages routed with correct auth/onboarding gating
+### 🌟 Key Highlights & Security
+- **Protected Access**: Requires entering the notebook verification password (`sruthi`) every time Noteouts is opened.
+- **Settings Access**: Accessible directly via the **Settings Page** (`Settings` → `Noteouts Ledger`) on both Desktop Web and Mobile PWA views.
+- **Off-Balance Isolation**: Noteouts entries do **NOT** modify your main available balance, `totalCashIn`, or `totalCashOut`.
+- **Directional Tracking**: Supports **Noted In** (money coming in off-book) and **Noted Out** (money given out off-book).
+- **Rich Timeline Controls**:
+  - Full-text search by reason or note details
+  - Filter by entry type (*Noted In*, *Noted Out*, or *All*)
+  - Sort by *Newest*, *Oldest*, *Highest Amount*, or *Lowest Amount*
+  - Instant inline quick-add form
+  - One-click editing via dialog modal
+  - Soft-delete with an instant **Undo** restore action
+  - Manual "Lock Notebook" button in header
 
-More detail: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) ·
-[`docs/FOLDER_STRUCTURE.md`](docs/FOLDER_STRUCTURE.md).
+### 🔌 Noteouts API Endpoints
+All noteout endpoints are guarded by JWT authentication under `/api/v1/noteouts`:
+- `GET /api/v1/noteouts` — List noteout entries (supports `search`, `type`, `sort`)
+- `GET /api/v1/noteouts/summary` — Returns summary totals (`totalNotedIn`, `totalNotedOut`, `count`)
+- `POST /api/v1/noteouts` — Create a noteout entry
+- `PUT /api/v1/noteouts/:id` — Update an entry
+- `DELETE /api/v1/noteouts/:id` — Soft-delete an entry
+- `POST /api/v1/noteouts/:id/restore` — Restore a soft-deleted entry
 
-## Design system — Stark Glass
+---
 
-| Token | Hex |
-|---|---|
-| Background | `#0B1220` |
-| Surface | `#111827` |
-| Card | `#1E293B` |
-| Primary | `#2563EB` |
-| Accent | `#38BDF8` |
-| Success | `#22C55E` |
-| Warning | `#F59E0B` |
-| Danger | `#EF4444` |
-| Text | `#F8FAFC` |
-| Muted text | `#94A3B8` |
+## 🎨 Design System — Stark Glass
 
-Buttons are restricted to blue, black, and white. Multi-color is reserved
-exclusively for charts. No illustrations, stock imagery, or decorative
-icons — Lucide icons only, used for representation.
+| Token | Hex | Description |
+|---|---|---|
+| Background | `#0B1220` | Deep cosmic dark background |
+| Surface | `#111827` | Glass panel surface |
+| Card | `#1E293B` | Interactive card background |
+| Primary | `#2563EB` | Stark Blue accent |
+| Accent | `#38BDF8` | Vibrant sky highlight |
+| Success | `#22C55E` | Cash In / Noted In green |
+| Danger | `#EF4444` | Cash Out / Noted Out red |
+| Muted | `#94A3B8` | Subtle text & borders |
 
-## Project structure
+---
+
+## 📂 Project Structure
 
 ```
 stark-money-wallet/
-├── client/    React PWA
-├── server/    Fastify API
-├── shared/    Shared TypeScript types
-├── docs/      Architecture, env vars, dev guide, roadmap
-└── scripts/   setup.sh
+├── frontend/   React 19 PWA & UI Components
+├── backend/    Fastify API & Prisma Database Service
+├── shared/     Shared TypeScript type contracts
+└── scripts/    Database migration & setup scripts
 ```
 
-## License
+---
+
+## 📄 License
 
 Private project — no license granted for reuse.

@@ -13,6 +13,7 @@ import { HistoryPage } from "@/pages/history/HistoryPage";
 import { MonthlySummaryPage } from "@/pages/summary/MonthlySummaryPage";
 import { SettingsPage } from "@/pages/settings/SettingsPage";
 import { ExportPage } from "@/pages/export/ExportPage";
+import { NoteoutsPage } from "@/pages/noteouts/NoteoutsPage";
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ export const router = createBrowserRouter([
           { path: "/summary", element: <MonthlySummaryPage /> },
           { path: "/settings", element: <SettingsPage /> },
           { path: "/export", element: <ExportPage /> },
+          { path: "/noteouts", element: <NoteoutsPage /> },
         ],
       },
     ],

@@ -9,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -28,6 +28,7 @@ model User {
   recurringExpenses  RecurringExpense[]
   monthlySummaries   MonthlySummary[]
   settings           Settings?
+  noteouts           Noteout[]
 
   @@map("users")
 }
@@ -108,4 +109,25 @@ model Settings {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("settings")
+}
+
+model Noteout {
+  id         String   @id @default(cuid())
+  userId     String
+  type       String   // "IN" or "OUT" — direction of the external money flow
+  amount     Float
+  reason     String   // required — the whole point is to note *why*
+  note       String?  // optional extra detail
+  occurredAt DateTime @default(now())
+
+  isDeleted  Boolean  @default(false)
+  deletedAt  DateTime?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, occurredAt])
+  @@index([userId, isDeleted])
+  @@map("noteouts")
 }

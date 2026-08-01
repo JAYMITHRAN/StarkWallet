@@ -1,4 +1,3 @@
-"use strict";
 /**
  * @stark/shared
  * -----------------------------------------------------------------------------
@@ -6,18 +5,16 @@
  * Never import UI or Node-only code here — this package must stay isomorphic.
  * -----------------------------------------------------------------------------
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ThemeMode = exports.RecurrenceFrequency = exports.TransactionCategory = exports.TransactionType = void 0;
 // ─────────────────────────────────────────────────────────────────────────
 // Enums
 // ─────────────────────────────────────────────────────────────────────────
-var TransactionType;
+export var TransactionType;
 (function (TransactionType) {
     TransactionType["CASH_IN"] = "CASH_IN";
     TransactionType["CASH_OUT"] = "CASH_OUT";
     TransactionType["OPENING_BALANCE"] = "OPENING_BALANCE";
-})(TransactionType || (exports.TransactionType = TransactionType = {}));
-var TransactionCategory;
+})(TransactionType || (TransactionType = {}));
+export var TransactionCategory;
 (function (TransactionCategory) {
     TransactionCategory["SALARY"] = "SALARY";
     TransactionCategory["BUSINESS"] = "BUSINESS";
@@ -36,15 +33,20 @@ var TransactionCategory;
     TransactionCategory["TRAVEL"] = "TRAVEL";
     TransactionCategory["INVESTMENT"] = "INVESTMENT";
     TransactionCategory["OTHER"] = "OTHER";
-})(TransactionCategory || (exports.TransactionCategory = TransactionCategory = {}));
-var RecurrenceFrequency;
+})(TransactionCategory || (TransactionCategory = {}));
+export var RecurrenceFrequency;
 (function (RecurrenceFrequency) {
     RecurrenceFrequency["DAILY"] = "DAILY";
     RecurrenceFrequency["WEEKLY"] = "WEEKLY";
     RecurrenceFrequency["MONTHLY"] = "MONTHLY";
     RecurrenceFrequency["YEARLY"] = "YEARLY";
-})(RecurrenceFrequency || (exports.RecurrenceFrequency = RecurrenceFrequency = {}));
-var ThemeMode;
+})(RecurrenceFrequency || (RecurrenceFrequency = {}));
+export var NoteoutType;
+(function (NoteoutType) {
+    NoteoutType["IN"] = "IN";
+    NoteoutType["OUT"] = "OUT";
+})(NoteoutType || (NoteoutType = {}));
+export var ThemeMode;
 (function (ThemeMode) {
     ThemeMode["DARK"] = "DARK";
-})(ThemeMode || (exports.ThemeMode = ThemeMode = {}));
+})(ThemeMode || (ThemeMode = {}));

@@ -36,6 +36,11 @@ export enum RecurrenceFrequency {
   YEARLY = "YEARLY",
 }
 
+export enum NoteoutType {
+  IN = "IN",
+  OUT = "OUT",
+}
+
 export enum ThemeMode {
   DARK = "DARK",
 }
@@ -94,6 +99,20 @@ export interface Settings {
   currency: string;
   theme: ThemeMode;
   notificationsEnabled: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Noteout {
+  id: string;
+  userId: string;
+  type: NoteoutType;
+  amount: number;
+  reason: string;
+  note: string | null;
+  occurredAt: string;
+  isDeleted: boolean;
+  deletedAt: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -168,4 +187,28 @@ export interface PaginatedResult<T> {
   pageSize: number;
   total: number;
   totalPages: number;
+}
+
+export interface CreateNoteoutRequest {
+  type: NoteoutType;
+  amount: number;
+  reason: string;
+  note?: string;
+  occurredAt?: string;
+}
+
+export interface UpdateNoteoutRequest {
+  type?: NoteoutType;
+  amount?: number;
+  reason?: string;
+  note?: string;
+  occurredAt?: string;
+}
+
+export interface NoteoutListQuery {
+  type?: NoteoutType;
+  search?: string;
+  from?: string;
+  to?: string;
+  sort?: "newest" | "oldest" | "highest" | "lowest";
 }

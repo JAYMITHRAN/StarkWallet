@@ -12,6 +12,7 @@ import { recurringRoutes } from "./routes/recurring.routes.js";
 import { settingsRoutes } from "./routes/settings.routes.js";
 import { summaryRoutes } from "./routes/summary.routes.js";
 import { importRoutes } from "./routes/import.routes.js";
+import { noteoutRoutes } from "./routes/noteout.routes.js";
 
 export async function buildApp() {
   const app = Fastify({
@@ -56,6 +57,7 @@ export async function buildApp() {
   app.register(settingsRoutes, { prefix: "/api/v1/settings" });
   app.register(summaryRoutes, { prefix: "/api/v1/summary" });
   app.register(importRoutes, { prefix: "/api/v1/import" });
+  app.register(noteoutRoutes, { prefix: "/api/v1/noteouts" });
 
   return app;
 }
